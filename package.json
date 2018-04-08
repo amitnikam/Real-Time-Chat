@@ -1,0 +1,18 @@
+{
+  "name": "ri-te-now",
+  "version": "1.0.0",
+  "description": "RiTeNOW: real-time chat app",
+  "scripts": {
+    "start": "node server"
+  },
+  "engines": {
+    "node": "~6.10.x"
+  },
+  "author": {
+    "name": "Amit Nikam"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.0"
+  }
+}
