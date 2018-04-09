@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>RiTeNOW</title>
+  <title></title>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,14 +15,15 @@
 
 <body>
   <div class="container mt-4">
+    <h6 id="info"></h6>
     <div class="row" id="messageArea">
-      <div class="col-4">
-        <div class="card card-block bg-light p-3">
+      <div class="col-12 col-md-4">
+        <div class="card card-block bg-light p-3 mb-2">
           <h3>Online Users</h3>
           <ul class="list-group" id="users"></ul>
         </div>
       </div>
-      <div class="col-8">
+      <div class="col-12 col-md-8">
         <h3>Chat</h3>
         <div class="chat" id="chat"></div>
 
@@ -61,6 +62,7 @@
       var $messageArea = $('#messageArea');
       var $users = $('#users');
       var $username = $('#username');
+      var $info=$('#info');
       $messageArea.addClass(' d-none');
 
       $messageForm.submit((e) => {
@@ -91,6 +93,11 @@
           html += '<li class="list-group-item">' + data[i] + '</li>';
         }
         $users.html(html);
+      });
+
+      socket.on('info', (package)=>{
+        var html = `Build: v${package.version}`;
+        $info.html(html);
       });
     });
   </script>

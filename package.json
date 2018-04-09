@@ -1,6 +1,6 @@
 {
   "name": "ri-te-now",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "RiTeNOW: real-time chat app",
   "scripts": {
     "start": "node server"

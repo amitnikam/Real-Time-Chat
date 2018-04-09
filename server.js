@@ -3,11 +3,11 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
-
+var info = require('./package.json');
 var users = [];
 var connections = [];
 
-server.listen(process.env.PORT || 3000);
+server.listen(process.env.PORT || 80);
 console.log('~~~~ Server Running ~~~~');
 
 app.get('/', (req, res) => {
@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 });
 
 io.sockets.on('connection', (socket) => {
+    socket.emit('info',info);
     connections.push(socket);
     console.log('Connected: %s Sockets Connected', connections.length);
 
