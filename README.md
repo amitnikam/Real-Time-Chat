@@ -8,7 +8,7 @@ v1.0.2
 
 ## Try the software
 
-This software is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try out.
+v1.0.1 is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try out.
 
 ## Built With
 
