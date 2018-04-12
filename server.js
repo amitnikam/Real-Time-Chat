@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
+var path = require('path');
 var info = require('./package.json');
 var users = [];
 var connections = [];
@@ -10,12 +11,13 @@ var connections = [];
 server.listen(process.env.PORT || 80);
 console.log('~~~~ Server Running ~~~~');
 
+app.use(express.static(path.join(__dirname, 'client')));
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile('index');
 });
 
 io.sockets.on('connection', (socket) => {
-    socket.emit('info',info);
+    socket.emit('info', info);
     connections.push(socket);
     console.log('Connected: %s Sockets Connected', connections.length);
 
@@ -26,7 +28,7 @@ io.sockets.on('connection', (socket) => {
         console.log('Disconnected %s Sockets Connected', connections.length);
     });
 
-    socket.on('send message', (data) => { 
+    socket.on('send message', (data) => {
         if (data == "Toss" || data == "toss" || data == "TOSS") {
             var bet = getRandomInt(2);
             if (bet == 0) {
@@ -36,7 +38,7 @@ io.sockets.on('connection', (socket) => {
             }
         }
         if (data == "Dice" || data == "dice" || data == "DICE") {
-            data += ": "+getRandomInt(6);
+            data += ": " + getRandomInt(6);
         }
         io.sockets.emit('new message', {
             msg: data,
