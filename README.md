@@ -1,4 +1,4 @@
-﻿# Real Time Chat
+# Real Time Chat
 
 This software is a real time chat application made with the intension of instant data exchange. 
 
@@ -8,7 +8,7 @@ v1.0.3
 
 ## Try the software
 
-This software is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try out.
+v1.0.1 is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try out.
 
 ## Built With
 
