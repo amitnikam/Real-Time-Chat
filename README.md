@@ -1,4 +1,4 @@
-﻿# Real Time Chat
+# Real Time Chat
 
 This software is a real time chat application made with the intension of instant data exchange. 
 
