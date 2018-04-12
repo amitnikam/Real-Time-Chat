@@ -2,3 +2,5 @@ node_modules/
 bin/
 obj/
 /RiTeNOW.njsproj
+/web.config
+/web.debug.config
