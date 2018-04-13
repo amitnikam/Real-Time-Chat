@@ -8,8 +8,7 @@
       var $messageArea = $('#messageArea');
       var $users = $('#users');
       var $username = $('#username');
-      var $info=$('#info');
-      $messageArea.addClass(' d-none');
+      var $info = $('#info');
 
       $messageForm.submit((e) => {
         e.preventDefault();
@@ -41,7 +40,7 @@
         $users.html(html);
       });
 
-      socket.on('info', (package)=>{
+      socket.on('info', (package) => {
         var html = `Build: v${package.version}`;
         $info.html(html);
       });
