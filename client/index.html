@@ -12,6 +12,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
   <script src="client.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">  </script>
+    <script>
+      $(document).ready(function(){
+        var user,pass;
+        $("#loginUser").click(function(){
+          user=$("#username").val();
+          pass=$("#password").val();
+          $.post("http://localhost:3000/login",{user: user,password: pass}, function(data){
+                alert("Response "+data);
+          });
+        });
+      });
+    </script>
 </head>
 
 <body>
@@ -40,14 +53,16 @@
     </div>
     <div class="row" id="userFormArea">
       <div class="col-12">
-        <form id="userForm">
           <div class="form-group">
+            <h1>Login to RiTeNOW</h1>
             <label>Enter Username</label>
-            <input id="username" class="form-control" />
+            <input id="username" name="username" class="form-control" />
             <br />
-            <input type="submit" class="btn btn-primary" value="Login" />
+            <label>Enter Password</label>
+            <input type="password" id="password" name="password" class="form-control" />
+            <br />
+            <input type="submit" id="loginUser" class="btn btn-primary" value="Login" />
           </div>
-        </form>
       </div>
     </div>
   </div>

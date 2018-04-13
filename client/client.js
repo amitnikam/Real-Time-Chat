@@ -22,16 +22,16 @@
           `<div class="card card-block bg-light p-1 my-1"><b>${data.user}:</b> ${data.msg}</div>`);
       });
 
-      $userForm.submit((e) => {
-        e.preventDefault();
-        socket.emit('new user', $username.val(), (data) => {
-          if (data) {
-            $userFormArea.addClass(' d-none');
-            $messageArea.removeClass(' d-none');
-          }
-        });
-        $username.val('');
-      });
+      // $userForm.submit((e) => {
+      //   e.preventDefault();
+      //   socket.emit('new user', $username.val(), (data) => {
+      //     if (data) {
+      //       $userFormArea.addClass(' d-none');
+      //       $messageArea.removeClass(' d-none');
+      //     }
+      //   });
+      //   $username.val('');
+      // });
 
       socket.on('get users', (data) => {
         var html = '';

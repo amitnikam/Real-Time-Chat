@@ -5,16 +5,40 @@ const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const path = require('path');
 const info = require('./package.json');
-const firebase=require('firebase');
+const firebase = require('firebase');
+const bodyParser = require("body-parser");
 var users = [];
 var connections = [];
 
 server.listen(process.env.PORT || 3000);
 console.log('~~~~ Server Running ~~~~');
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(express.static(path.join(__dirname, 'client')));
 app.get('/', (req, res) => {
     res.sendFile('index');
+});
+
+app.post('/login',function(req,res){
+  var user_name=req.body.user;
+  var password=req.body.password;
+  firebase.database().ref('/users').orderByChild('username').equalTo(user_name).on("value", function(snapshot) {
+    console.log(snapshot.val());
+    snapshot.forEach(function(data) {
+        console.log(data.key);
+    });
+});
+  // firebase.database().ref('/users').orderByChild("username").equalTo(user_name).on('child_added', function(snapshot) {
+  //       console.log("Customer Key:"+snapshot.key);
+  //       if(snapshot.hasChild(user_name))
+  //           res.end("Invalid");
+  //       else
+  //           res.end("Valid");
+  //   });
+  console.log("User name = "+user_name+", password is "+password);
+
 });
 
 // Initialize Firebase
@@ -28,11 +52,12 @@ app.get('/', (req, res) => {
   };
   firebase.initializeApp(config);
 var ref = firebase.database().ref('/users');
-  var user ={
-    username:"nikhil",
-    password:"123456"
-  }
- ref.push(user);
+  // var user ={
+  //   username:"nikhil",
+  //   password:"123456"
+  // }
+
+ //ref.push(user);
 
 io.sockets.on('connection', (socket) => {
     socket.emit('info', info);
