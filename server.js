@@ -1,20 +1,38 @@
 'use strict';
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
-var path = require('path');
-var info = require('./package.json');
+const express = require('express');
+const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io').listen(server);
+const path = require('path');
+const info = require('./package.json');
+const firebase=require('firebase');
 var users = [];
 var connections = [];
 
-server.listen(process.env.PORT || 80);
+server.listen(process.env.PORT || 3000);
 console.log('~~~~ Server Running ~~~~');
 
 app.use(express.static(path.join(__dirname, 'client')));
 app.get('/', (req, res) => {
     res.sendFile('index');
 });
+
+// Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDOwYMsW_qzgf4v30CvAFCTfcUlIvlMYEY",
+    authDomain: "ritenow-1934.firebaseapp.com",
+    databaseURL: "https://ritenow-1934.firebaseio.com",
+    projectId: "ritenow-1934",
+    storageBucket: "ritenow-1934.appspot.com",
+    messagingSenderId: "354295418341"
+  };
+  firebase.initializeApp(config);
+var ref = firebase.database().ref('/users');
+  var user ={
+    username:"nikhil",
+    password:"123456"
+  }
+ ref.push(user);
 
 io.sockets.on('connection', (socket) => {
     socket.emit('info', info);
