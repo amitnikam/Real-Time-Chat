@@ -121,23 +121,29 @@ io.sockets.on('connection', (socket) => {
         var username = data.username;
         var password = data.password;
         admin_ref.orderByChild('username').equalTo(username).on("value", function (snapshot) {
-            snapshot.forEach((data) => {
-                var key = data.key;
-                var _users = firebase.database().ref('/admins/' + key);
-                _users.on('value', function (snapshot) {
-                    var _user = snapshot.val();
-                    var _username = _user.username;
-                    var _password = _user.password;
-                    if (username == _username && password == _password) {
-                        socket.username = "Admin: " + _username;
-                        callback(true);
-                        console.log("Hello Admin");
-                    } else {
-                        callback(false);
-                        console.log("Wrong Credentials");
-                    }
+            var temp = snapshot.numChildren();
+            if (temp == 0) {
+                callback(false);
+                console.log("No Such User");
+            } else {
+                snapshot.forEach((data) => {
+                    var key = data.key;
+                    var _users = firebase.database().ref('/admins/' + key);
+                    _users.on('value', function (snapshot) {
+                        var _user = snapshot.val();
+                        var _username = _user.username;
+                        var _password = _user.password;
+                        if (username == _username && password == _password) {
+                            socket.username = "Admin: " + _username;
+                            callback(true);
+                            console.log("Hello Admin");
+                        } else {
+                            callback(false);
+                            console.log("Wrong Credentials");
+                        }
+                    });
                 });
-            });
+            }
         });
     });
 
