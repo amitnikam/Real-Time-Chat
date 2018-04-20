@@ -1,18 +1,26 @@
-$(function () {
-  var socket = io.connect();
-  var $messageForm = $('#messageForm');
-  var $message = $('#message');
-  var $chat = $('#chat');
-  var $userForm = $('#userForm');
-  var $registerForm = $('#registerForm');
-  var $userFormArea = $('#userFormArea');
-  var $messageArea = $('#messageArea');
-  var $users = $('#users');
-  var $lusername = $('#lusername');
-  var $lpassword = $('#lpassword');
-  var $rusername = $('#rusername');
-  var $rpassword = $('#rpassword');
-  var $info = $('#info');
+
+  $(function () {
+      var socket = io.connect();
+      var $info = $('#info');
+      var $message = $('#message');
+      var $countUsers = $('#countUsers');
+      var $countOnline = $('#countOnline');
+      var $chat = $('#chat');
+      var $users = $('#users');
+      var $userForm = $('#userForm');
+      var $adminForm = $('#adminForm');
+      var $messageForm = $('#messageForm');
+      var $registerForm = $('#registerForm');
+      var $userFormArea = $('#userFormArea');
+      var $adminFormArea = $('#adminFormArea');
+      var $messageArea = $('#messageArea');
+      var $toolArea = $('#toolArea');
+      var $lusername = $('#lusername');
+      var $lpassword = $('#lpassword');
+      var $rusername = $('#rusername');
+      var $rpassword = $('#rpassword');
+      var $ausername = $('#ausername');
+      var $apassword = $('#apassword');
 
   $messageForm.submit((e) => {
     e.preventDefault();
@@ -25,23 +33,43 @@ $(function () {
       `<div class="card card-block bg-light p-1 my-1"><b>${data.user}:</b> ${data.msg}</div>`);
   });
 
-  $userForm.submit((e) => {
-    e.preventDefault();
-    var user = {
-      username: $lusername.val().trim(),
-      password: $lpassword.val().trim(),
-    }
-    socket.emit('login user', user, (data) => {
-      if (data) {
-        $userFormArea.addClass(' d-none');
-        $messageArea.removeClass(' d-none');
-      } else {
-        window.alert("Wrong User");
-      }
-    });
-    $lusername.val('');
-    $lpassword.val('');
-  });
+
+      $adminForm.submit((e) => {
+        e.preventDefault();
+        var user = {
+          username: $ausername.val(),
+          password: $apassword.val(),
+        }
+        socket.emit('admin login', user, (data) => {
+          if (data) {
+            $adminFormArea.addClass(' d-none');
+            $toolArea.removeClass(' d-none');
+            window.alert("Hello " + user.username);
+          } else {
+            window.alert("Wrong User");
+          }
+        });
+        $ausername.val('');
+        $apassword.val('');
+      });
+
+      $userForm.submit((e) => {
+        e.preventDefault();
+        var user = {
+          username: $lusername.val(),
+          password: $lpassword.val(),
+        }
+        socket.emit('login user', user, (data) => {
+          if (data) {
+            $userFormArea.addClass(' d-none');
+            $messageArea.removeClass(' d-none');
+          } else {
+            window.alert("Wrong User");
+          }
+        });
+        $lusername.val('');
+        $lpassword.val('');
+      });
 
   $registerForm.submit((e) => {
     e.preventDefault();
@@ -54,6 +82,7 @@ $(function () {
     socket.emit('register user', user);
   });
 
+
   socket.on('register response', (data) => {
     if (data) {
       window.alert("Registration Successful!");
@@ -62,17 +91,21 @@ $(function () {
     }
   });
 
+      socket.on('get users', (data) => {
+        var html = '';
+        for (i = 0; i < data.length; i++) {
+          html += '<li class="list-group-item">' + data[i] + '</li>';
+        }
+        $countOnline.html(data.length);
+        $users.html(html);
+      });
 
-  socket.on('get users', (data) => {
-    var html = '';
-    for (i = 0; i < data.length; i++) {
-      html += '<li class="list-group-item">' + data[i] + '</li>';
-    }
-    $users.html(html);
-  });
+      socket.on('count users', (data) => {
+        $countUsers.html(data);
+      });
 
-  socket.on('info', (package) => {
-    var html = `Build: v${package.version}`;
-    $info.html(html);
-  });
-});
+      socket.on('info', (package) => {
+        var html = `Build: v${package.version}`;
+        $info.html(html);
+      });
+    });
