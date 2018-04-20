@@ -11,7 +11,7 @@ var connections = [];
 
 server.listen(process.env.PORT || 3000);
 console.log('~~~~ Server Running on port 3000');
-console.log('~~~~ Test Build v1.1.0')
+console.log('~~~~ Test Build v1.1.2')
 
 app.use(express.static(path.join(__dirname, 'client')));
 app.get('/', (req, res) => {
@@ -92,37 +92,19 @@ io.sockets.on('connection', (socket) => {
         });
     });
 
-    socket.on('register user', (data2, callback) => {
-        console.log(data2);
-        var username = data2.username;
-        var password = data2.password;
-        var user = {
-            username: username,
-            password: password
-        }
-        ref.orderByChild('username').equalTo(username).on("value", function (snapshot) {
-          var flag = 0;
-            snapshot.forEach((data) => {
-                var key = data.key;
-                var _users = firebase.database().ref('/users/' + key);
-                _users.on('value', function (snapshot) {
-                    var _user = snapshot.val();
-                    var _username = _user.username;
-                    if (username == _username) {
-                        flag=1;
-                    }
-                });
-            });
-            if(flag==1)
-            {
-              console.log("user already exists");
-              callback(false);
-            }
-            else {
-              console.log("in else part "+ user);
+    socket.on('register user', (user) => {
+        console.log(user);
+        var temp = 1;
+        ref.orderByChild('username').equalTo(user.username).once("value", function (snapshot) {
+            temp = snapshot.numChildren();
+            console.log(temp);
+            if (temp == 0) {
                 ref.push(user);
                 console.log("user added");
-                callback(true);
+                socket.emit('register response', true);
+            } else {
+                console.log("user already exists");
+                socket.emit('register response', false);
             }
         });
     });
