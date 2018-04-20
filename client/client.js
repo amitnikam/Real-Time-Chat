@@ -4,12 +4,15 @@
       var $message = $('#message');
       var $chat = $('#chat');
       var $userForm = $('#userForm');
+      var $registerForm = $('#registerForm');
       var $userFormArea = $('#userFormArea');
       var $messageArea = $('#messageArea');
       var $users = $('#users');
-      var $username = $('#username');
-      var $info=$('#info');
-      $messageArea.addClass(' d-none');
+      var $lusername = $('#lusername');
+      var $lpassword = $('#lpassword');
+      var $rusername = $('#rusername');
+      var $rpassword = $('#rpassword');
+      var $info = $('#info');
 
       $messageForm.submit((e) => {
         e.preventDefault();
@@ -24,13 +27,37 @@
 
       $userForm.submit((e) => {
         e.preventDefault();
-        socket.emit('new user', $username.val(), (data) => {
+        var user = {
+          username: $lusername.val(),
+          password: $lpassword.val(),
+        }
+        socket.emit('login user', user, (data) => {
           if (data) {
             $userFormArea.addClass(' d-none');
             $messageArea.removeClass(' d-none');
+          } else {
+            window.alert("Wrong User");
           }
         });
-        $username.val('');
+        $lusername.val('');
+        $lpassword.val('');
+      });
+
+      $registerForm.submit((e) => {
+        e.preventDefault();
+        var user = {
+          username: $rusername.val(),
+          password: $rpassword.val(),
+        }
+        socket.emit('register user', user, (data) => {
+          if (data) {
+            window.alert("Registration Successful!");
+          } else {
+            window.alert("Registration Failed!");
+          }
+        });
+        $rusername.val('');
+        $rpassword.val('');
       });
 
       socket.on('get users', (data) => {
@@ -41,7 +68,7 @@
         $users.html(html);
       });
 
-      socket.on('info', (package)=>{
+      socket.on('info', (package) => {
         var html = `Build: v${package.version}`;
         $info.html(html);
       });
