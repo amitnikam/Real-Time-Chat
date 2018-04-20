@@ -4,7 +4,7 @@ This software is a real time chat application made with the intension of instant
 
 ## Build Version
 
-v1.2.0
+v1.2.1
 
 ## Try the software
 
