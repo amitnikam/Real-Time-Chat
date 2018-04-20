@@ -29,13 +29,9 @@ var config = {
 };
 firebase.initializeApp(config);
 var ref = firebase.database().ref('/users');
-// var user ={
-//   username:"nikhil",
-//   password:"123456"
-// }
 
-//ref.push(user);
 
+// Socket Initialize
 io.sockets.on('connection', (socket) => {
     socket.emit('info', info);
     connections.push(socket);
