@@ -92,17 +92,39 @@ io.sockets.on('connection', (socket) => {
         });
     });
 
-    socket.on('register user', (data, callback) => {
-        console.log(data);
-        var username = data.username;
-        var password = data.password;
+    socket.on('register user', (data2, callback) => {
+        console.log(data2);
+        var username = data2.username;
+        var password = data2.password;
         var user = {
             username: username,
             password: password
         }
-
-        ref.push(user);
-        callback(true);
+        ref.orderByChild('username').equalTo(username).on("value", function (snapshot) {
+          var flag = 0;
+            snapshot.forEach((data) => {
+                var key = data.key;
+                var _users = firebase.database().ref('/users/' + key);
+                _users.on('value', function (snapshot) {
+                    var _user = snapshot.val();
+                    var _username = _user.username;
+                    if (username == _username) {
+                        flag=1;
+                    }
+                });
+            });
+            if(flag==1)
+            {
+              console.log("user already exists");
+              callback(false);
+            }
+            else {
+              console.log("in else part "+ user);
+                ref.push(user);
+                console.log("user added");
+                callback(true);
+            }
+        });
     });
 
     function updateUserNames() {

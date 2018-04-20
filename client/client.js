@@ -53,7 +53,7 @@
           if (data) {
             window.alert("Registration Successful!");
           } else {
-            window.alert("Registration Failed!");
+            window.alert("Registration Failed! Try with different username");
           }
         });
         $rusername.val('');
