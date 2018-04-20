@@ -20,3 +20,7 @@ v1.2.1 is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try 
 
 - [Amit Nikam](https://github.com/amitnikam) (nikam.amit.1997@gmail.com)
 
+#### collaborator
+
+- [Nikhil Jain](https://github.com/njain483)
+
