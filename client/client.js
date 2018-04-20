@@ -28,8 +28,8 @@
       $userForm.submit((e) => {
         e.preventDefault();
         var user = {
-          username: $lusername.val(),
-          password: $lpassword.val(),
+          username: $lusername.val().trim(),
+          password: $lpassword.val().trim(),
         }
         socket.emit('login user', user, (data) => {
           if (data) {
@@ -46,8 +46,8 @@
       $registerForm.submit((e) => {
         e.preventDefault();
         var user = {
-          username: $rusername.val(),
-          password: $rpassword.val(),
+          username: $rusername.val().trim(),
+          password: $rpassword.val().trim(),
         }
         socket.emit('register user', user, (data) => {
           if (data) {

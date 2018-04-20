@@ -9,8 +9,8 @@ const firebase = require('firebase');
 var users = [];
 var connections = [];
 
-server.listen(process.env.PORT || 80);
-console.log('~~~~ Server Running on port 80');
+server.listen(process.env.PORT || 3000);
+console.log('~~~~ Server Running on port 3000');
 console.log('~~~~ Test Build v1.1.0')
 
 app.use(express.static(path.join(__dirname, 'client')));
