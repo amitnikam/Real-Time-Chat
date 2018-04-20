@@ -6,7 +6,6 @@ const io = require('socket.io').listen(server);
 const path = require('path');
 const info = require('./package.json');
 const firebase = require('firebase');
-const bodyParser = require('body-parser');
 var users = [];
 var connections = [];
 
@@ -14,37 +13,9 @@ server.listen(process.env.PORT || 80);
 console.log('~~~~ Server Running on port 80');
 console.log('~~~~ Test Build v1.1.0')
 
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
-app.use(bodyParser.json());
-
 app.use(express.static(path.join(__dirname, 'client')));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + "/client/index.html");
-});
-
-app.post('/chat', function (req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
-    ref.orderByChild('username').equalTo(username).on("value", function (snapshot) {
-        snapshot.forEach((data) => {
-            var key = data.key;
-            var _users = firebase.database().ref('/users/' + key);
-            _users.on('value', function (snapshot) {
-                var _user = snapshot.val();
-                var _username = _user.username;
-                var _password = _user.password;
-                if (username == _username && password == _password) {
-                    res.sendFile(__dirname + "/client/chat.html");
-                    console.log(_username, _password);
-                } else {
-                    res.redirect('/');
-                    console.log('wrong details');
-                }
-            });
-        });
-    });
 });
 
 // Initialize Firebase
@@ -98,11 +69,44 @@ io.sockets.on('connection', (socket) => {
         return Math.floor(Math.random() * Math.floor(max));
     }
 
-    socket.on('new user', (data, callback) => {
+    socket.on('login user', (data, callback) => {
+        console.log(data);
+        var username = data.username;
+        var password = data.password;
+        ref.orderByChild('username').equalTo(username).on("value", function (snapshot) {
+            snapshot.forEach((data) => {
+                var key = data.key;
+                var _users = firebase.database().ref('/users/' + key);
+                _users.on('value', function (snapshot) {
+                    var _user = snapshot.val();
+                    var _username = _user.username;
+                    var _password = _user.password;
+                    if (username == _username && password == _password) {
+                        socket.username = _username;
+                        users.push(socket.username);
+                        callback(true);
+                        updateUserNames();
+                        console.log("right user");
+                    } else {
+                        callback(false);
+                        console.log("wrong user");
+                    }
+                });
+            });
+        });
+    });
+
+    socket.on('register user', (data, callback) => {
+        console.log(data);
+        var username = data.username;
+        var password = data.password;
+        var user = {
+            username: username,
+            password: password
+        }
+
+        ref.push(user);
         callback(true);
-        socket.username = data;
-        users.push(socket.username);
-        updateUserNames();
     });
 
     function updateUserNames() {
