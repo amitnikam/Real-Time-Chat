@@ -1,4 +1,5 @@
-    $(function () {
+
+  $(function () {
       var socket = io.connect();
       var $info = $('#info');
       var $message = $('#message');
@@ -21,16 +22,17 @@
       var $ausername = $('#ausername');
       var $apassword = $('#apassword');
 
-      $messageForm.submit((e) => {
-        e.preventDefault();
-        socket.emit('send message', $message.val());
-        $message.val('');
-      });
+  $messageForm.submit((e) => {
+    e.preventDefault();
+    socket.emit('send message', $message.val());
+    $message.val('');
+  });
 
-      socket.on('new message', (data) => {
-        $chat.append(
-          `<div class="card card-block bg-light p-1 my-1"><b>${data.user}:</b> ${data.msg}</div>`);
-      });
+  socket.on('new message', (data) => {
+    $chat.append(
+      `<div class="card card-block bg-light p-1 my-1"><b>${data.user}:</b> ${data.msg}</div>`);
+  });
+
 
       $adminForm.submit((e) => {
         e.preventDefault();
@@ -69,22 +71,25 @@
         $lpassword.val('');
       });
 
-      $registerForm.submit((e) => {
-        e.preventDefault();
-        var user = {
-          username: $rusername.val(),
-          password: $rpassword.val(),
-        }
-        socket.emit('register user', user, (data) => {
-          if (data) {
-            window.alert("Registration Successful!");
-          } else {
-            window.alert("Registration Failed!");
-          }
-        });
-        $rusername.val('');
-        $rpassword.val('');
-      });
+  $registerForm.submit((e) => {
+    e.preventDefault();
+    var user = {
+      username: $rusername.val().trim(),
+      password: $rpassword.val().trim(),
+    }
+    $rusername.val('');
+    $rpassword.val('');
+    socket.emit('register user', user);
+  });
+
+
+  socket.on('register response', (data) => {
+    if (data) {
+      window.alert("Registration Successful!");
+    } else {
+      window.alert("Registration Failed! Try with different username");
+    }
+  });
 
       socket.on('get users', (data) => {
         var html = '';

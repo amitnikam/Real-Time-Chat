@@ -9,9 +9,10 @@ const firebase = require('firebase');
 var users = [];
 var connections = [];
 
-server.listen(process.env.PORT || 80);
-console.log('~~~~ Server Running on port 80');
+server.listen(process.env.PORT || 3000);
+console.log('~~~~ Server Running on port 3000');
 console.log(`~~~~ Test Build ${info.version}`)
+
 
 app.use(express.static(path.join(__dirname, 'client')));
 app.get('/', (req, res) => {
@@ -98,17 +99,21 @@ io.sockets.on('connection', (socket) => {
         });
     });
 
-    socket.on('register user', (data, callback) => {
-        console.log(data);
-        var username = data.username;
-        var password = data.password;
-        var user = {
-            username: username,
-            password: password
-        }
-
-        ref.push(user);
-        callback(true);
+    socket.on('register user', (user) => {
+        console.log(user);
+        var temp = 1;
+        ref.orderByChild('username').equalTo(user.username).once("value", function (snapshot) {
+            temp = snapshot.numChildren();
+            console.log(temp);
+            if (temp == 0) {
+                ref.push(user);
+                console.log("user added");
+                socket.emit('register response', true);
+            } else {
+                console.log("user already exists");
+                socket.emit('register response', false);
+            }
+        });
     });
 
     socket.on('admin login', (data, callback) => {
