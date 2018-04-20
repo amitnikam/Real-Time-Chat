@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- jQuery, Bootstrap & Socket -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+    <script src="client.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h6 id="info"></h6>
+        <div class="row d-none mt-4" id="toolArea">
+            <div class="col-12 col-md-3">
+                <h5>Total Registered Users :
+                    <span id="countUsers"></span>
+                </h5>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card card-block bg-light p-3 mb-2">
+                    <h3>Online Users (
+                        <span id="countOnline">0</span> )</h3>
+                    <ul class="list-group" id="users"></ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-5">
+                <h3>Spectate Chat</h3>
+                <div class="chat" id="chat"></div>
+            </div>
+        </div>
+        <div class="row" id="adminFormArea">
+            <div class="col-12">
+                <form id="adminForm">
+                    <div class="form-group">
+                        <h1>Admin Login</h1>
+                        <label>Username</label>
+                        <input type="text" name="username" class="form-control" id="ausername" />
+                        <br />
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" id="apassword" />
+                        <br />
+                        <input type="submit" class="btn btn-primary" value="Login" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

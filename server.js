@@ -11,11 +11,14 @@ var connections = [];
 
 server.listen(process.env.PORT || 80);
 console.log('~~~~ Server Running on port 80');
-console.log('~~~~ Test Build v1.1.0')
+console.log(`~~~~ Test Build ${info.version}`)
 
 app.use(express.static(path.join(__dirname, 'client')));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + "/client/index.html");
+});
+app.get('/admin', (req, res) => {
+    res.sendFile(__dirname + "/client/admin.html");
 });
 
 // Initialize Firebase
@@ -29,6 +32,8 @@ var config = {
 };
 firebase.initializeApp(config);
 var ref = firebase.database().ref('/users');
+var admin_ref = firebase.database().ref('/admins');
+
 
 
 // Socket Initialize
@@ -36,6 +41,7 @@ io.sockets.on('connection', (socket) => {
     socket.emit('info', info);
     connections.push(socket);
     console.log('Connected: %s Sockets Connected', connections.length);
+    updateRegisteredUsers();
     socket.on('disconnect', (data) => {
         users.splice(users.indexOf(socket.username), 1);
         updateUserNames();
@@ -104,6 +110,38 @@ io.sockets.on('connection', (socket) => {
         ref.push(user);
         callback(true);
     });
+
+    socket.on('admin login', (data, callback) => {
+        console.log(data);
+        var username = data.username;
+        var password = data.password;
+        admin_ref.orderByChild('username').equalTo(username).on("value", function (snapshot) {
+            snapshot.forEach((data) => {
+                var key = data.key;
+                var _users = firebase.database().ref('/admins/' + key);
+                _users.on('value', function (snapshot) {
+                    var _user = snapshot.val();
+                    var _username = _user.username;
+                    var _password = _user.password;
+                    if (username == _username && password == _password) {
+                        socket.username = "Admin: " + _username;
+                        callback(true);
+                        console.log("Hello Admin");
+                    } else {
+                        callback(false);
+                        console.log("Wrong Credentials");
+                    }
+                });
+            });
+        });
+    });
+
+    function updateRegisteredUsers() {
+        firebase.database().ref().child("users").on("value", function (snapshot) {
+            var count = snapshot.numChildren();
+            socket.emit('count users', count);
+        });
+    }
 
     function updateUserNames() {
         io.sockets.emit('get users', users);
