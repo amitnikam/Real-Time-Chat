@@ -8,7 +8,7 @@ v1.2.1
 
 ## Try the software
 
-v1.0.3 is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try out.
+v1.2.1 is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try out.
 
 ## Built With
 
@@ -19,4 +19,8 @@ v1.0.3 is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try 
 #### Original Author and Development Lead
 
 - [Amit Nikam](https://github.com/amitnikam) (nikam.amit.1997@gmail.com)
+
+#### collaborator
+
+- [Nikhil Jain](https://github.com/njain483)
 
