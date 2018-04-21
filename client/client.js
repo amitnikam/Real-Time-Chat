@@ -13,6 +13,8 @@ $(function () {
   var $userFormArea = $('#userFormArea');
   var $adminFormArea = $('#adminFormArea');
   var $messageArea = $('#messageArea');
+  var $passwordForm = $('#passwordForm');
+  var $deleteUserForm = $('#deleteUserForm');
   var $toolArea = $('#toolArea');
   var $lusername = $('#lusername');
   var $lpassword = $('#lpassword');
@@ -20,6 +22,8 @@ $(function () {
   var $rpassword = $('#rpassword');
   var $ausername = $('#ausername');
   var $apassword = $('#apassword');
+  var $pusername = $('#pusername');
+  var $ppassword = $('#ppassword');
 
   $messageForm.submit((e) => {
     e.preventDefault();
@@ -60,13 +64,14 @@ $(function () {
     }
     socket.emit('login user', user, (data) => {
       if (data) {
+        document.getElementById("pusername").value = $lusername.val();
         $userFormArea.addClass(' d-none');
         $messageArea.removeClass(' d-none');
       } else {
         window.alert("Wrong User");
       }
     });
-    $lusername.val('');
+    //$lusername.val('');
     $lpassword.val('');
   });
 
@@ -79,6 +84,34 @@ $(function () {
     $rusername.val('');
     $rpassword.val('');
     socket.emit('register user', user);
+  });
+
+  $passwordForm.submit((e) => {
+    e.preventDefault();
+    var user = {
+      username: document.getElementById('pusername').value,
+      password: $ppassword.val().trim(),
+    }
+    socket.emit('update password', user, (data) => {
+      if (data) {
+        window.alert("Success");
+      } else {
+        window.alert("failed");
+      }
+    });
+  });
+
+  $deleteUserForm.submit((e) => {
+    e.preventDefault();
+    var user = document.getElementById('userList').value;
+    $('#userList').empty();
+    socket.emit('delete user', user, (data) => {
+      if (data) {
+        window.alert("Success");
+      } else {
+        window.alert("failed");
+      }
+    });
   });
 
 
@@ -100,7 +133,22 @@ $(function () {
   });
 
   socket.on('count users', (data) => {
-    $countUsers.html(data);
+    var ulist = data.userList;
+    for(var i=0;i<ulist.length;i++)
+    {
+      try{
+        var x = document.getElementById("userList");
+        var option = document.createElement("option");
+        option.text = ulist[i];
+        option.value = ulist[i];
+        x.add(option);
+      }
+      catch (Exception)
+      {
+
+      }
+    }
+    $countUsers.html(data.count);
   });
 
   socket.on('info', (package) => {

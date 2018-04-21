@@ -22,6 +22,7 @@
         <div class="card card-block bg-light p-3 mb-2">
 
           <button type="button" class="btn btn-danger mb-3" onclick="location.reload(true);">LOGOUT</button>
+          <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#myModal">Update Password</button>
           <h3>Online Users (
             <span id="countOnline"></span> )</h3>
 
@@ -54,6 +55,7 @@
             <input type="password" name="password" class="form-control" id="lpassword" />
             <br />
             <input type="submit" class="btn btn-primary" value="Login" />
+            <a href="admin.html">Admin?</a>
           </div>
         </form>
       </div>
@@ -74,6 +76,35 @@
     </div>
   </div>
 
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Update Password</h4>
+        </div>
+        <form id="passwordForm">
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" name="pusername" class="form-control" id="pusername" readonly/>
+              <br />
+              <label>Password (Use Sudo Password)</label>
+              <input type="password" name="ppassword" class="form-control" id="ppassword" />
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Update" />
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
 </body>
 
 </html>
