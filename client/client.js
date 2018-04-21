@@ -16,6 +16,7 @@ $(function () {
   var $passwordForm = $('#passwordForm');
   var $deleteUserForm = $('#deleteUserForm');
   var $toolArea = $('#toolArea');
+  var $dusername = $('#dusername');
   var $lusername = $('#lusername');
   var $lpassword = $('#lpassword');
   var $rusername = $('#rusername');
@@ -103,15 +104,14 @@ $(function () {
 
   $deleteUserForm.submit((e) => {
     e.preventDefault();
-    var user = document.getElementById('userList').value;
-    $('#userList').empty();
-    socket.emit('delete user', user, (data) => {
+    socket.emit('delete user', $dusername.val(), (data) => {
       if (data) {
         window.alert("Success");
       } else {
         window.alert("failed");
       }
     });
+    $dusername.val('');
   });
 
 
@@ -133,21 +133,6 @@ $(function () {
   });
 
   socket.on('count users', (data) => {
-    var ulist = data.userList;
-    for(var i=0;i<ulist.length;i++)
-    {
-      try{
-        var x = document.getElementById("userList");
-        var option = document.createElement("option");
-        option.text = ulist[i];
-        option.value = ulist[i];
-        x.add(option);
-      }
-      catch (Exception)
-      {
-
-      }
-    }
     $countUsers.html(data.count);
   });
 

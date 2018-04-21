@@ -4,11 +4,11 @@ This software is a real time chat application made with the intension of instant
 
 ## Build Version
 
-v1.2.1
+v1.2.2
 
 ## Try the software
 
-v1.2.1 is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try out.
+v1.2.2 is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try out.
 
 ## Built With
 
@@ -20,7 +20,7 @@ v1.2.1 is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try 
 
 - [Amit Nikam](https://github.com/amitnikam) (nikam.amit.1997@gmail.com)
 
-#### collaborator
+#### Collaborator
 
 - [Nikhil Jain](https://github.com/njain483)
 

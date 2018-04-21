@@ -76,11 +76,11 @@ io.sockets.on('connection', (socket) => {
     console.log(data);
     var username = data.username;
     var password = data.password;
-    ref.orderByChild('username').equalTo(username).on("value", function(snapshot) {
+    ref.orderByChild('username').equalTo(username).on("value", function (snapshot) {
       snapshot.forEach((data) => {
         var key = data.key;
         var _users = firebase.database().ref('/users/' + key);
-        _users.on('value', function(snapshot) {
+        _users.on('value', function (snapshot) {
           var _user = snapshot.val();
           var _username = _user.username;
           var _password = _user.password;
@@ -102,7 +102,7 @@ io.sockets.on('connection', (socket) => {
   socket.on('register user', (user) => {
     console.log(user);
     var temp = 1;
-    ref.orderByChild('username').equalTo(user.username).once("value", function(snapshot) {
+    ref.orderByChild('username').equalTo(user.username).once("value", function (snapshot) {
       temp = snapshot.numChildren();
       console.log(temp);
       if (temp == 0) {
@@ -120,7 +120,7 @@ io.sockets.on('connection', (socket) => {
     console.log(data);
     var username = data.username;
     var password = data.password;
-    ref.orderByChild('username').equalTo(username).on("value", function(snapshot) {
+    ref.orderByChild('username').equalTo(username).on("value", function (snapshot) {
       var temp = snapshot.numChildren();
       if (temp == 0) {
         callback(false);
@@ -129,16 +129,16 @@ io.sockets.on('connection', (socket) => {
         snapshot.forEach((data) => {
           var key = data.key;
           var _users = firebase.database().ref('/users/' + key);
-          _users.on('value', function(snapshot) {
+          _users.on('value', function (snapshot) {
             var _user = snapshot.val();
             var _username = _user.username;
             var _password = _user.password;
-            var path = "/users/"+key+"/password"
+            var path = "/users/" + key + "/password"
             if (username == _username) {
               //set data
               _users.set({
-                'username' : username,
-                'password' : password
+                'username': username,
+                'password': password
               });
               callback(true);
               console.log("Password Updated");
@@ -152,39 +152,24 @@ io.sockets.on('connection', (socket) => {
     });
   });
 
-  socket.on('delete user', (data, callback) => {
-    console.log(data);
-    var username = data;
-    ref.orderByChild('username').equalTo(username).on("value", function(snapshot) {
-      var temp = snapshot.numChildren();
-      var flag = 1;
-        snapshot.forEach((data) => {
-          var key = data.key;
-          var _users = firebase.database().ref('/users/' + key);
-          _users.on('value', function(snapshot) {
-            var _user = snapshot.val();
-            try{
-              var _username = _user.username;
-              var _password = _user.password;
-              if (username == _username) {
-                //set data
-                _users.remove();
-                updateRegisteredUsers();
-                flag = 0;
-                callback(true);
-                console.log("Deleted!");
-              }
-            }
-            catch (Exception)
-            {
-
-            }
-          });
-        });
-        if(flag == 1)
-        {
-          updateRegisteredUsers();
-        }
+  socket.on('delete user', (username, callback) => {
+    console.log(username);
+    var temp = 1;
+    ref.orderByChild('username').equalTo(username).once("value", function (snapshot) {
+      temp = snapshot.numChildren();
+      var _users;
+      snapshot.forEach((data) => {
+        var key = data.key;
+        _users = firebase.database().ref('/users/' + key);
+      });
+      console.log(temp);
+      if (temp == 0) {
+        callback(false);
+      } else {
+        callback(true);
+        _users.remove();
+        updateRegisteredUsers();
+      }
     });
   });
 
@@ -192,7 +177,7 @@ io.sockets.on('connection', (socket) => {
     console.log(data);
     var username = data.username;
     var password = data.password;
-    admin_ref.orderByChild('username').equalTo(username).on("value", function(snapshot) {
+    admin_ref.orderByChild('username').equalTo(username).on("value", function (snapshot) {
       var temp = snapshot.numChildren();
       if (temp == 0) {
         callback(false);
@@ -201,7 +186,7 @@ io.sockets.on('connection', (socket) => {
         snapshot.forEach((data) => {
           var key = data.key;
           var _users = firebase.database().ref('/admins/' + key);
-          _users.on('value', function(snapshot) {
+          _users.on('value', function (snapshot) {
             var _user = snapshot.val();
             var _username = _user.username;
             var _password = _user.password;
@@ -220,7 +205,7 @@ io.sockets.on('connection', (socket) => {
   });
 
   function updateRegisteredUsers() {
-    firebase.database().ref().child("users").on("value", function(snapshot) {
+    firebase.database().ref().child("users").on("value", function (snapshot) {
       var count = snapshot.numChildren();
       var res = {
         count: count
