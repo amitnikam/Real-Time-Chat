@@ -6,10 +6,6 @@ This software is a real time chat application made with the intension of instant
 
 v1.2.2
 
-## Try the software
-
-v1.2.2 is [Available Here](http://real-time-chat-by-amit.herokuapp.com/) to try out.
-
 ## Built With
 
 * [NODEJS](https://nodejs.org/en/).
