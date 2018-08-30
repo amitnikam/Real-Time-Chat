@@ -2,6 +2,10 @@
 
 This software is a real time chat application made with the intension of instant data exchange. 
 
+## Try the software
+
+v1.2.2 is [Available Here](http://real-time-chatroom.herokuapp.com/) to try out.
+
 ## Build Version
 
 v1.2.2
