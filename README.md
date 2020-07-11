@@ -4,7 +4,9 @@ This software is a real time chat application made with the intension of instant
 
 ## Try the software
 
-v1.2.2 is [Available Here](http://real-time-chatroom.herokuapp.com/) to try out.
+Clone or Download the repository and run the **server.js** with nodejs.
+Open multiple browser instances to replicate different users.
+OR .. Deploy the software on a server to experiment.
 
 ## Build Version
 
